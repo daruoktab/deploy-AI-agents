@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title="AI Utility Agent API",
-    description="An intelligent agent with various utility tools powered by GPT-4 and LangGraph",
+    description="An intelligent agent with various utility tools powered by GPT-5 Nano and LangGraph",
     version="1.0.0"
 )
 

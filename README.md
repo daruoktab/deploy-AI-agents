@@ -1,6 +1,6 @@
 # 🤖 AI Utility Agent
 
-A production-ready AI agent powered by **GPT-4** and **LangGraph**, deployed on **Vercel**. This agent provides intelligent utility functions including calculations, text analysis, JSON formatting, and more.
+A production-ready AI agent powered by **GPT-5 Nano** and **LangGraph**, deployed on **Vercel**. This agent provides intelligent utility functions including calculations, text analysis, JSON formatting, and more.
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.121+-green.svg)
@@ -25,7 +25,7 @@ Visit the deployed application: [Your Vercel URL]
 
 - **Backend**: FastAPI (Python)
 - **AI Framework**: LangChain + LangGraph
-- **LLM**: OpenAI GPT-4
+- **LLM**: OpenAI GPT-5 Nano
 - **Frontend**: HTML/CSS/JavaScript (Vanilla)
 - **Deployment**: Vercel Serverless Functions
 - **Package Manager**: pip
@@ -235,7 +235,7 @@ This project is open source and available under the [MIT License](LICENSE).
 - [LangChain](https://github.com/langchain-ai/langchain) for the AI framework
 - [FastAPI](https://fastapi.tiangolo.com/) for the web framework
 - [Vercel](https://vercel.com/) for serverless deployment
-- [OpenAI](https://openai.com/) for GPT-4
+- [OpenAI](https://openai.com/) for GPT-5 Nano
 
 ## 📧 Contact
 

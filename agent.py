@@ -141,7 +141,7 @@ SYSTEM_MESSAGE = (
     "Be concise, accurate, and helpful in your responses."
 )
 
-llm = ChatOpenAI(model="gpt-4", temperature=0)
+llm = ChatOpenAI(model="gpt-5-nano", temperature=0)
 agent = create_react_agent(llm, TOOLS, prompt=SYSTEM_MESSAGE)
 
 
