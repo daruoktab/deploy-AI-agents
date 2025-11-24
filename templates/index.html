@@ -3,62 +3,237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Note Agent</title>
+    <title>AI Utility Agent</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 50px auto;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 0.95em;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .examples {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .examples h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .examples ul {
+            list-style: none;
+        }
+        
+        .examples li {
+            padding: 8px 0;
+            color: #555;
+            font-size: 0.9em;
+        }
+        
+        .examples li:before {
+            content: "→ ";
+            color: #764ba2;
+            font-weight: bold;
+            margin-right: 5px;
         }
         
         textarea {
             width: 100%;
-            height: 100px;
-            padding: 10px;
-            margin: 10px 0;
+            min-height: 120px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1em;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
         }
         
         button {
-            padding: 10px 20px;
+            width: 100%;
+            padding: 15px;
+            margin-top: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
             cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
         
         #response {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 10px;
             display: none;
             white-space: pre-wrap;
+            line-height: 1.6;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+        }
+        
+        #response.visible {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .error {
-            border-color: red;
-            color: red;
+            border-left-color: #e74c3c;
+            background: #fee;
+            color: #c0392b;
+        }
+        
+        .loading {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <h1>Note Agent</h1>
-    
-    <form id="agentForm">
-        <textarea id="prompt" placeholder="Enter your prompt..." required></textarea>
-        <button type="submit">Send</button>
-    </form>
-    
-    <div id="response"></div>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 AI Utility Agent</h1>
+            <p>Powered by GPT-4 and LangGraph</p>
+        </div>
+        
+        <div class="content">
+            <div class="examples">
+                <h3>✨ What can I help you with?</h3>
+                <ul>
+                    <li>Calculate: "What's 25 * 48 + sqrt(144)?"</li>
+                    <li>Analyze text: "Analyze this paragraph: [your text]"</li>
+                    <li>Format JSON: "Format this JSON: {name:john,age:30}"</li>
+                    <li>Get time: "What's the current date and time?"</li>
+                    <li>Convert case: "Convert 'Hello World' to snake_case"</li>
+                </ul>
+            </div>
+            
+            <form id="agentForm">
+                <textarea id="prompt" placeholder="Ask me anything... Try: 'Calculate 15% of 250'" required></textarea>
+                <button type="submit" id="submitBtn">Send Message</button>
+            </form>
+            
+            <div id="response"></div>
+        </div>
+    </div>
     
     <script>
         const form = document.getElementById('agentForm');
         const promptInput = document.getElementById('prompt');
         const responseDiv = document.getElementById('response');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        // Handle Enter key: submit form unless Ctrl+Enter (for new line)
+        promptInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault();
+                form.dispatchEvent(new Event('submit'));
+            } else if (e.key === 'Enter' && e.ctrlKey) {
+                // Ctrl+Enter: insert new line
+                e.preventDefault();
+                const start = promptInput.selectionStart;
+                const end = promptInput.selectionEnd;
+                const value = promptInput.value;
+                promptInput.value = value.substring(0, start) + '\n' + value.substring(end);
+                promptInput.selectionStart = promptInput.selectionEnd = start + 1;
+            }
+        });
         
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            responseDiv.style.display = 'block';
-            responseDiv.className = '';
-            responseDiv.textContent = 'Loading...';
+            responseDiv.className = 'visible loading';
+            responseDiv.innerHTML = '<div class="spinner"></div><span>Thinking...</span>';
+            submitBtn.disabled = true;
             
             try {
                 const response = await fetch('/agent', {
@@ -70,14 +245,17 @@
                 const data = await response.json();
                 
                 if (response.ok) {
+                    responseDiv.className = 'visible';
                     responseDiv.textContent = data.response;
                 } else {
-                    responseDiv.className = 'error';
-                    responseDiv.textContent = 'Error: ' + (data.detail || 'Unknown error');
+                    responseDiv.className = 'visible error';
+                    responseDiv.textContent = '❌ Error: ' + (data.detail || 'Unknown error');
                 }
             } catch (error) {
-                responseDiv.className = 'error';
-                responseDiv.textContent = 'Error: ' + error.message;
+                responseDiv.className = 'visible error';
+                responseDiv.textContent = '❌ Error: ' + error.message;
+            } finally {
+                submitBtn.disabled = false;
             }
         });
     </script>
