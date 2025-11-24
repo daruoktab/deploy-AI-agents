@@ -50,6 +50,4 @@ def run_agent(user_input: str) -> str:
         )
         return result["messages"][-1].content
     except Exception as e:
-        return f"Error: {str(e)}"
-    
-print(run_agent("hello how are you!"))    
+        return f"Error: {str(e)}" 
